@@ -53,4 +53,12 @@
         </dependencies>
     </dependencyManagement>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>OpenNMS API Contract Packages</name>
+            <url>https://maven.pkg.github.com/OpenNMS-Cloud/api-contracts</url>
+        </repository>
+    </distributionManagement>
+
 </project>

@@ -15,15 +15,15 @@ on:
 jobs:
   java:
     name: Java library
-    uses: ./.github/workflows/reusable/maven-library.yml
+    uses: ./.github/workflows/maven-library.yml
     secrets: inherit
     with:
       working-directory: 'flows-contracts'
-      publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+      publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
   go:
     name: Go module
-    uses: ./.github/workflows/reusable/go-module.yml
+    uses: ./.github/workflows/go-module.yml
     secrets: inherit
     with:
       working-directory: 'flows-contracts'
-      publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+      publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}

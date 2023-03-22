@@ -1,6 +1,11 @@
-name: Build Flow Contracts Java Library
+name: Publish Flow Contracts Java Library
 
 on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'flows-contracts/**'
   pull_request:
     branches:
       - 'master'
@@ -14,7 +19,7 @@ defaults:
 
 jobs:
   build-and-publish:
-    name: Build Maven library
+    name: Build and publish Maven library
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -33,6 +38,12 @@ jobs:
 
       - name: Build library
         run: mvn -B verify
+
+      - name: Publish library
+        if: ${{ github.event_name == 'pull_request' && github.ref == 'refs/heads/develop' }}
+        run: mvn -B deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload library artifacts
         uses: actions/upload-artifact@v3

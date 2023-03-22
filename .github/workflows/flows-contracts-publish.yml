@@ -32,9 +32,10 @@ jobs:
           java-version: 17
 
       - name: Cache Maven dependencies
-        uses: ./.github/actions/maven-cache
+        uses: actions/cache@v3
         with:
-          cache-key-hash: ${{ hashFiles('pom.xml', 'flows-contracts/**/pom.xml') }}
+          path: '~/.m2/repository'
+          key: maven-deps-${{ runner.os }}-${{ runner.arch }}- ${{'flows-contracts/**/pom.xml') }}
 
       - name: Build and deploy library
         run: mvn deploy

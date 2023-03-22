@@ -6,6 +6,12 @@ on:
       - 'master'
     paths:
       - 'flows-contracts/**'
+  # temporary to test
+  pull_request:
+    branches:
+      - 'master'
+    paths:
+      - 'flows-contracts/**'
 
 jobs:
   build-and-publish:

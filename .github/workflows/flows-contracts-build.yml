@@ -32,7 +32,7 @@ jobs:
           key: maven-deps-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flows-contracts/**/pom.xml') }}
 
       - name: Build library
-        run: mvn verify
+        run: mvn -B verify
 
       - name: Upload library artifacts
         uses: actions/upload-artifact@v3

@@ -38,7 +38,9 @@ jobs:
           key: maven-deps-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flows-contracts/**/pom.xml') }}
 
       - name: Build and deploy library
-        run: mvn deploy
+        run: mvn -B deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload library artifacts
         uses: actions/upload-artifact@v3

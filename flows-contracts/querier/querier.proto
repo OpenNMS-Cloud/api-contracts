@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+option go_package = "github.com/OpenNMS-Cloud/flows-contracts/api/flows-contracts/querier/v1";
+
+package org.opennms.apicontracts.flows.querier;
+import "google/protobuf/timestamp.proto";
+
+enum Direction {
+    INGRESS = 0;
+    EGRESS = 1;
+    UNKNOWN = 255;
+}
+
+message Exporter {
+    string foreign_source = 1;
+    string foreign_id = 2;
+    uint32 node_id = 3;
+    repeated string categories = 4;
+    int32 interface_id = 5;
+}
+
+message TimeRangeFilter {
+    google.protobuf.Timestamp start_time = 1;
+    google.protobuf.Timestamp end_time = 2;
+}
+
+message ApplicationFilter {
+    string application = 1;
+}
+
+message ExporterFilter {
+    Exporter exporter = 1;
+}
+
+message Filter {
+    oneof filter {
+        TimeRangeFilter time_range = 1;
+        ApplicationFilter application = 6;
+        ExporterFilter exporter = 7;
+    }
+}
+
+message ListRequest {
+    string tenant_id = 1;
+    string matching_prefix = 2;
+    int64 limit = 3;
+    repeated Filter filters = 4;
+}
+
+message List {
+    repeated string elements = 1;
+}
+
+message ApplicationSummariesRequest {
+    string tenant_id = 1;
+    repeated string applications = 2; // Explicit list of application (precedence over count)
+    int64 count = 3; // For Top-N summaries (ignored when provided an explicit list of applications)
+    bool include_other = 4;
+    repeated Filter filters = 5;
+}
+
+message TrafficSummary {
+    int64 bytes_in = 1;
+    int64 bytes_out = 2;
+    bool congestion_encountered = 3;
+    bool non_ecn_capable_transport = 4;
+    oneof type { // Will include hosts and conversations in the future
+        string application = 5; 
+    }
+}
+
+message Summaries {
+    repeated TrafficSummary summaries = 1;
+}
+
+message ApplicationSeriesRequest {
+    string tenant_id = 1;
+    repeated string applications = 2; // Explicit list of application (precedence over count)
+    int64 count = 3; // For Top-N summaries (ignored when provided an explicit list of applications)
+    int64 step = 4;
+    bool include_other = 5;
+    repeated Filter filters = 6;
+}
+
+message FlowingPoint {
+    google.protobuf.Timestamp timestamp = 1;
+    double value = 2;
+    optional Direction direction = 3;
+    oneof type { // Will include hosts and conversations in the future
+        string application = 4;
+    }
+}
+
+message Series {
+    repeated FlowingPoint point = 1;
+}
+
+service ExporterService {
+    // List available exporter's interface IDs for a given time range
+    rpc GetExporterInterfaces(ListRequest) returns (List);
+}
+
+service ApplicationsService {
+    // List available applications for a given time range
+    rpc GetApplications(ListRequest) returns (List);
+    // Get tabular summary for the TopN or a given list of applications
+    rpc GetApplicationSummaries(ApplicationSummariesRequest) returns (Summaries);
+    // Get the time series data for the TopN or a given list of applications
+    rpc GetApplicationSeries(ApplicationSeriesRequest) returns (Series);
+}

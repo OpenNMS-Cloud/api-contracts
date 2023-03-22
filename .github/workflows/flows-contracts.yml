@@ -37,10 +37,11 @@ jobs:
           key: maven-deps-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flows-contracts/**/pom.xml') }}
 
       - name: Build library
+        if: ${{ github.event_name != 'push' || github.ref != 'refs/heads/develop' }}
         run: mvn -B verify
 
-      - name: Publish library
-#        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+      - name: Build and publish library
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
         run: mvn -B deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

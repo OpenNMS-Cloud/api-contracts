@@ -13,11 +13,15 @@ on:
     paths:
       - 'flows-contracts/**'
 
+defaults:
+  run:
+    shell: bash
+    working-directory: 'flows-contracts'
+
 jobs:
   build-and-publish:
     name: Build and publish Maven library
     runs-on: ubuntu-latest
-    working-directory: 'flows-contracts'
     steps:
       - uses: actions/checkout@v3
 
@@ -34,7 +38,6 @@ jobs:
 
       - name: Build and deploy library
         run: mvn deploy
-        shell: bash
 
       - name: Upload library artifacts
         uses: actions/upload-artifact@v3

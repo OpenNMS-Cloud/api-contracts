@@ -16,11 +16,6 @@ on:
         description: 'The GITHUB_TOKEN secret passed from the caller workflow'
         required: false
 
-defaults:
-  run:
-    shell: bash
-    working-directory: ${{ inputs.working-directory }}
-
 jobs:
   build-and-publish:
     name: Build and publish Maven library
@@ -38,14 +33,18 @@ jobs:
         uses: actions/cache@v3
         with:
           path: '~/.m2/repository'
-          key: maven-deps-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('{0}/**/pom.xml'.format(inputs.working-directory)) }}
+          key: maven-deps-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles(format('{0}/**/pom.xml', inputs.working-directory)) }}
 
       - name: Build library
         run: mvn -B install
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
 
       - name: Publish library
         if: ${{ inputs.publish }}
         run: mvn -B deploy:deploy
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
         env:
           GITHUB_TOKEN: ${{ inputs.github-token }}
 
@@ -53,4 +52,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: 'jar-files'
-          path: ${{ '{0}/**/target/*.jar'.format(inputs.working-directory) }}
+          path: ${{ format('{0}/**/target/*.jar', inputs.working-directory) }}

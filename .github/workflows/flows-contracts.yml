@@ -12,42 +12,18 @@ on:
     paths:
       - 'flows-contracts/**'
 
-defaults:
-  run:
-    shell: bash
-    working-directory: 'flows-contracts'
-
 jobs:
-  build-and-publish:
-    name: Build and publish Maven library
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: 17
-
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: '~/.m2/repository'
-          key: maven-deps-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flows-contracts/**/pom.xml') }}
-
-      - name: Build library
-        if: ${{ github.event_name != 'push' || github.ref != 'refs/heads/develop' }}
-        run: mvn -B verify
-
-      - name: Build and publish library
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
-        run: mvn -B deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload library artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: 'jar-files'
-          path: 'flows-contracts/**/target/*.jar'
+  java:
+    name: Java library
+    uses: ./.github/workflows/reusable/maven-library.yml
+    secrets: inherit
+    with:
+      working-directory: 'flows-contracts'
+      publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+  go:
+    name: Go module
+    uses: ./.github/workflows/reusable/go-module.yml
+    secrets: inherit
+    with:
+      working-directory: 'flows-contracts'
+      publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}

@@ -1,4 +1,4 @@
-name: Publish Flow Contracts Java Library
+name: Flow Contracts
 
 on:
   push:

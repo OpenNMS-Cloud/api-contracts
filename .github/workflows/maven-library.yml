@@ -36,13 +36,14 @@ jobs:
           key: maven-deps-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles(format('{0}/**/pom.xml', inputs.working-directory)) }}
 
       - name: Build library
-        run: mvn -B install
+        if: ${{ !inputs.publish }}
+        run: mvn -B verify
         shell: bash
         working-directory: ${{ inputs.working-directory }}
 
       - name: Publish library
         if: ${{ inputs.publish }}
-        run: mvn -B deploy:deploy
+        run: mvn -B deploy
         shell: bash
         working-directory: ${{ inputs.working-directory }}
         env:

@@ -1,0 +1,30 @@
+name: Flows Contracts
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'flows-contracts/**'
+  pull_request:
+    branches:
+      - 'master'
+    paths:
+      - 'flows-contracts/**'
+
+jobs:
+  java:
+    name: Java library
+    uses: ./.github/workflows/maven-library.yml
+    secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      working-directory: 'flows-contracts'
+      publish: true
+#      publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+  go:
+    name: Go module
+    uses: ./.github/workflows/go-module.yml
+    with:
+      working-directory: 'flows-contracts'
+      publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}

@@ -15,6 +15,7 @@
 
     <modules>
         <module>flows-contracts</module>
+        <module>minion-certificate-manager</module>
     </modules>
 
     <properties>

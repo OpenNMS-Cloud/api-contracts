@@ -10,3 +10,9 @@
 .idea/
 *.iml
 target/
+
+# maven-release-plugin dry run artifacts
+pom.xml.next
+pom.xml.releaseBackup
+pom.xml.tag
+release.properties

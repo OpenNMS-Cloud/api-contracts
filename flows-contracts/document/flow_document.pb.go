@@ -24,22 +24,27 @@ const (
 type Direction int32
 
 const (
-	Direction_INGRESS Direction = 0
-	Direction_EGRESS  Direction = 1
-	Direction_UNKNOWN Direction = 255
+	// proto3 enums must start with a zero-valued entry, which is used as the default value.
+	// With proto3 there is no distinction between a field that's empty and one that's set to its default.
+	Direction_UNDEFINED_DIRECTION Direction = 0
+	Direction_INGRESS             Direction = 1
+	Direction_EGRESS              Direction = 2
+	Direction_UNKNOWN             Direction = 255
 )
 
 // Enum value maps for Direction.
 var (
 	Direction_name = map[int32]string{
-		0:   "INGRESS",
-		1:   "EGRESS",
+		0:   "UNDEFINED_DIRECTION",
+		1:   "INGRESS",
+		2:   "EGRESS",
 		255: "UNKNOWN",
 	}
 	Direction_value = map[string]int32{
-		"INGRESS": 0,
-		"EGRESS":  1,
-		"UNKNOWN": 255,
+		"UNDEFINED_DIRECTION": 0,
+		"INGRESS":             1,
+		"EGRESS":              2,
+		"UNKNOWN":             255,
 	}
 )
 
@@ -73,7 +78,9 @@ func (Direction) EnumDescriptor() ([]byte, []int) {
 type SamplingAlgorithm int32
 
 const (
-	SamplingAlgorithm_UNASSIGNED                                               SamplingAlgorithm = 0
+	// proto3 enums must start with a zero-valued entry, which is used as the default value.
+	// With proto3 there is no distinction between a field that's empty and one that's set to its default.
+	SamplingAlgorithm_UNDEFINED_SAMPLING_ALGORITHM                             SamplingAlgorithm = 0
 	SamplingAlgorithm_SYSTEMATIC_COUNT_BASED_SAMPLING                          SamplingAlgorithm = 1
 	SamplingAlgorithm_SYSTEMATIC_TIME_BASED_SAMPLING                           SamplingAlgorithm = 2
 	SamplingAlgorithm_RANDOM_N_OUT_OF_N_SAMPLING                               SamplingAlgorithm = 3
@@ -86,7 +93,7 @@ const (
 // Enum value maps for SamplingAlgorithm.
 var (
 	SamplingAlgorithm_name = map[int32]string{
-		0: "UNASSIGNED",
+		0: "UNDEFINED_SAMPLING_ALGORITHM",
 		1: "SYSTEMATIC_COUNT_BASED_SAMPLING",
 		2: "SYSTEMATIC_TIME_BASED_SAMPLING",
 		3: "RANDOM_N_OUT_OF_N_SAMPLING",
@@ -96,7 +103,7 @@ var (
 		7: "FLOW_STATE_DEPENDENT_INTERMEDIATE_FLOW_SELECTION_PROCESS",
 	}
 	SamplingAlgorithm_value = map[string]int32{
-		"UNASSIGNED":                                               0,
+		"UNDEFINED_SAMPLING_ALGORITHM":                             0,
 		"SYSTEMATIC_COUNT_BASED_SAMPLING":                          1,
 		"SYSTEMATIC_TIME_BASED_SAMPLING":                           2,
 		"RANDOM_N_OUT_OF_N_SAMPLING":                               3,
@@ -137,25 +144,30 @@ func (SamplingAlgorithm) EnumDescriptor() ([]byte, []int) {
 type NetflowVersion int32
 
 const (
-	NetflowVersion_V5    NetflowVersion = 0
-	NetflowVersion_V9    NetflowVersion = 1
-	NetflowVersion_IPFIX NetflowVersion = 2
-	NetflowVersion_SFLOW NetflowVersion = 3
+	// proto3 enums must start with a zero-valued entry, which is used as the default value.
+	// With proto3 there is no distinction between a field that's empty and one that's set to its default.
+	NetflowVersion_UNDEFINED_NETFLOW_VERSION NetflowVersion = 0
+	NetflowVersion_V5                        NetflowVersion = 1
+	NetflowVersion_V9                        NetflowVersion = 2
+	NetflowVersion_IPFIX                     NetflowVersion = 3
+	NetflowVersion_SFLOW                     NetflowVersion = 4
 )
 
 // Enum value maps for NetflowVersion.
 var (
 	NetflowVersion_name = map[int32]string{
-		0: "V5",
-		1: "V9",
-		2: "IPFIX",
-		3: "SFLOW",
+		0: "UNDEFINED_NETFLOW_VERSION",
+		1: "V5",
+		2: "V9",
+		3: "IPFIX",
+		4: "SFLOW",
 	}
 	NetflowVersion_value = map[string]int32{
-		"V5":    0,
-		"V9":    1,
-		"IPFIX": 2,
-		"SFLOW": 3,
+		"UNDEFINED_NETFLOW_VERSION": 0,
+		"V5":                        1,
+		"V9":                        2,
+		"IPFIX":                     3,
+		"SFLOW":                     4,
 	}
 )
 
@@ -189,19 +201,24 @@ func (NetflowVersion) EnumDescriptor() ([]byte, []int) {
 type Locality int32
 
 const (
-	Locality_PUBLIC  Locality = 0
-	Locality_PRIVATE Locality = 1
+	// proto3 enums must start with a zero-valued entry, which is used as the default value.
+	// With proto3 there is no distinction between a field that's empty and one that's set to its default.
+	Locality_UNDEFINED_LOCALITY Locality = 0
+	Locality_PUBLIC             Locality = 1
+	Locality_PRIVATE            Locality = 2
 )
 
 // Enum value maps for Locality.
 var (
 	Locality_name = map[int32]string{
-		0: "PUBLIC",
-		1: "PRIVATE",
+		0: "UNDEFINED_LOCALITY",
+		1: "PUBLIC",
+		2: "PRIVATE",
 	}
 	Locality_value = map[string]int32{
-		"PUBLIC":  0,
-		"PRIVATE": 1,
+		"UNDEFINED_LOCALITY": 0,
+		"PUBLIC":             1,
+		"PRIVATE":            2,
 	}
 )
 
@@ -239,9 +256,9 @@ type NodeInfo struct {
 
 	ForeignSource string   `protobuf:"bytes,1,opt,name=foreign_source,json=foreignSource,proto3" json:"foreign_source,omitempty"`
 	ForeignId     string   `protobuf:"bytes,2,opt,name=foreign_id,json=foreignId,proto3" json:"foreign_id,omitempty"`
-	NodeId        uint32   `protobuf:"varint,3,opt,name=node_id,json=nodeId,proto3" json:"node_id,omitempty"`
+	NodeId        int64    `protobuf:"varint,3,opt,name=node_id,json=nodeId,proto3" json:"node_id,omitempty"`
 	Categories    []string `protobuf:"bytes,4,rep,name=categories,proto3" json:"categories,omitempty"`
-	InterfaceId   int32    `protobuf:"varint,5,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
+	InterfaceId   int64    `protobuf:"varint,5,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
 }
 
 func (x *NodeInfo) Reset() {
@@ -290,7 +307,7 @@ func (x *NodeInfo) GetForeignId() string {
 	return ""
 }
 
-func (x *NodeInfo) GetNodeId() uint32 {
+func (x *NodeInfo) GetNodeId() int64 {
 	if x != nil {
 		return x.NodeId
 	}
@@ -304,7 +321,7 @@ func (x *NodeInfo) GetCategories() []string {
 	return nil
 }
 
-func (x *NodeInfo) GetInterfaceId() int32 {
+func (x *NodeInfo) GetInterfaceId() int64 {
 	if x != nil {
 		return x.InterfaceId
 	}
@@ -316,58 +333,79 @@ type FlowDocument struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Timestamp     uint64                `protobuf:"varint,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`                                                        // Flow timestamp in milliseconds.
-	NumBytes      *wrappers.UInt64Value `protobuf:"bytes,2,opt,name=num_bytes,json=numBytes,proto3" json:"num_bytes,omitempty"`                                           // Number of bytes transferred in the flow
-	Direction     Direction             `protobuf:"varint,3,opt,name=direction,proto3,enum=org.opennms.apicontracts.flows.document.Direction" json:"direction,omitempty"` // Direction of the flow (egress vs ingress)
-	DstAddress    string                `protobuf:"bytes,4,opt,name=dst_address,json=dstAddress,proto3" json:"dst_address,omitempty"`                                     //  Destination address.
-	DstHostname   string                `protobuf:"bytes,5,opt,name=dst_hostname,json=dstHostname,proto3" json:"dst_hostname,omitempty"`                                  // Destination address hostname.
-	DstAs         *wrappers.UInt64Value `protobuf:"bytes,6,opt,name=dst_as,json=dstAs,proto3" json:"dst_as,omitempty"`                                                    // Destination autonomous system (AS).
-	DstMaskLen    *wrappers.UInt32Value `protobuf:"bytes,7,opt,name=dst_mask_len,json=dstMaskLen,proto3" json:"dst_mask_len,omitempty"`                                   // The number of contiguous bits in the source address subnet mask.
-	DstPort       *wrappers.UInt32Value `protobuf:"bytes,8,opt,name=dst_port,json=dstPort,proto3" json:"dst_port,omitempty"`                                              // Destination port.
-	EngineId      *wrappers.UInt32Value `protobuf:"bytes,9,opt,name=engine_id,json=engineId,proto3" json:"engine_id,omitempty"`                                           // Slot number of the flow-switching engine.
-	EngineType    *wrappers.UInt32Value `protobuf:"bytes,10,opt,name=engine_type,json=engineType,proto3" json:"engine_type,omitempty"`                                    // Type of flow-switching engine.
-	DeltaSwitched *wrappers.UInt64Value `protobuf:"bytes,11,opt,name=delta_switched,json=deltaSwitched,proto3" json:"delta_switched,omitempty"`                           // Unix timestamp in ms at which the previous exported packet-
+	// Timestamp: time when the flow has been received from the system
+	Timestamp uint64                `protobuf:"varint,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`                                                        // Flow timestamp in milliseconds.
+	NumBytes  *wrappers.UInt64Value `protobuf:"bytes,2,opt,name=num_bytes,json=numBytes,proto3" json:"num_bytes,omitempty"`                                           // Number of bytes transferred in the flow
+	Direction Direction             `protobuf:"varint,3,opt,name=direction,proto3,enum=org.opennms.apicontracts.flows.document.Direction" json:"direction,omitempty"` // Direction of the flow (egress vs ingress)
+	// Destination address. Used in enrichment phase to calculate NodeInfo
+	DstAddress string `protobuf:"bytes,4,opt,name=dst_address,json=dstAddress,proto3" json:"dst_address,omitempty"`
+	// Destination address hostname. Calculated during enrichment phase
+	DstHostname string                `protobuf:"bytes,5,opt,name=dst_hostname,json=dstHostname,proto3" json:"dst_hostname,omitempty"`
+	DstAs       *wrappers.UInt64Value `protobuf:"bytes,6,opt,name=dst_as,json=dstAs,proto3" json:"dst_as,omitempty"`                  // Destination autonomous system (AS).
+	DstMaskLen  *wrappers.UInt32Value `protobuf:"bytes,7,opt,name=dst_mask_len,json=dstMaskLen,proto3" json:"dst_mask_len,omitempty"` // The number of contiguous bits in the source address subnet mask.
+	DstPort     *wrappers.UInt32Value `protobuf:"bytes,8,opt,name=dst_port,json=dstPort,proto3" json:"dst_port,omitempty"`            // Destination port.
+	EngineId    *wrappers.UInt32Value `protobuf:"bytes,9,opt,name=engine_id,json=engineId,proto3" json:"engine_id,omitempty"`         // Slot number of the flow-switching engine.
+	EngineType  *wrappers.UInt32Value `protobuf:"bytes,10,opt,name=engine_type,json=engineType,proto3" json:"engine_type,omitempty"`  // Type of flow-switching engine.
+	// Delta switched Value minus detected skew
+	DeltaSwitched *wrappers.UInt64Value `protobuf:"bytes,11,opt,name=delta_switched,json=deltaSwitched,proto3" json:"delta_switched,omitempty"` // Unix timestamp in ms at which the previous exported packet-
 	// -associated with this flow was switched.
+	// First switched Value minus detected skew
 	FirstSwitched *wrappers.UInt64Value `protobuf:"bytes,12,opt,name=first_switched,json=firstSwitched,proto3" json:"first_switched,omitempty"` // Unix timestamp in ms at which the first packet-
 	// -associated with this flow was switched.
-	LastSwitched       *wrappers.UInt64Value `protobuf:"bytes,13,opt,name=last_switched,json=lastSwitched,proto3" json:"last_switched,omitempty"`
-	NumFlowRecords     *wrappers.UInt32Value `protobuf:"bytes,14,opt,name=num_flow_records,json=numFlowRecords,proto3" json:"num_flow_records,omitempty"`                                                                        // Number of flow records in the associated packet.
-	NumPackets         *wrappers.UInt64Value `protobuf:"bytes,15,opt,name=num_packets,json=numPackets,proto3" json:"num_packets,omitempty"`                                                                                      // Number of packets in the flow.
-	FlowSeqNum         *wrappers.UInt64Value `protobuf:"bytes,16,opt,name=flow_seq_num,json=flowSeqNum,proto3" json:"flow_seq_num,omitempty"`                                                                                    // Flow packet sequence number.
-	InputSnmpIfindex   *wrappers.UInt32Value `protobuf:"bytes,17,opt,name=input_snmp_ifindex,json=inputSnmpIfindex,proto3" json:"input_snmp_ifindex,omitempty"`                                                                  // Input SNMP ifIndex.
-	OutputSnmpIfindex  *wrappers.UInt32Value `protobuf:"bytes,18,opt,name=output_snmp_ifindex,json=outputSnmpIfindex,proto3" json:"output_snmp_ifindex,omitempty"`                                                               // Output SNMP ifIndex.
-	IpProtocolVersion  *wrappers.UInt32Value `protobuf:"bytes,19,opt,name=ip_protocol_version,json=ipProtocolVersion,proto3" json:"ip_protocol_version,omitempty"`                                                               // IPv4 vs IPv6.
-	NextHopAddress     string                `protobuf:"bytes,20,opt,name=next_hop_address,json=nextHopAddress,proto3" json:"next_hop_address,omitempty"`                                                                        // Next hop IpAddress.
-	NextHopHostname    string                `protobuf:"bytes,21,opt,name=next_hop_hostname,json=nextHopHostname,proto3" json:"next_hop_hostname,omitempty"`                                                                     // Next hop hostname.
-	Protocol           *wrappers.UInt32Value `protobuf:"bytes,22,opt,name=protocol,proto3" json:"protocol,omitempty"`                                                                                                            // IP protocol number i.e 6 for TCP, 17 for UDP
-	SamplingAlgorithm  SamplingAlgorithm     `protobuf:"varint,23,opt,name=sampling_algorithm,json=samplingAlgorithm,proto3,enum=org.opennms.apicontracts.flows.document.SamplingAlgorithm" json:"sampling_algorithm,omitempty"` // Sampling algorithm ID.
-	SamplingInterval   *wrappers.DoubleValue `protobuf:"bytes,24,opt,name=sampling_interval,json=samplingInterval,proto3" json:"sampling_interval,omitempty"`                                                                    // Sampling interval.
-	SrcAddress         string                `protobuf:"bytes,26,opt,name=src_address,json=srcAddress,proto3" json:"src_address,omitempty"`                                                                                      // Source address.
-	SrcHostname        string                `protobuf:"bytes,27,opt,name=src_hostname,json=srcHostname,proto3" json:"src_hostname,omitempty"`                                                                                   // Source hostname.
-	SrcAs              *wrappers.UInt64Value `protobuf:"bytes,28,opt,name=src_as,json=srcAs,proto3" json:"src_as,omitempty"`                                                                                                     // Source AS number.
-	SrcMaskLen         *wrappers.UInt32Value `protobuf:"bytes,29,opt,name=src_mask_len,json=srcMaskLen,proto3" json:"src_mask_len,omitempty"`                                                                                    // The number of contiguous bits in the destination address subnet mask.
-	SrcPort            *wrappers.UInt32Value `protobuf:"bytes,30,opt,name=src_port,json=srcPort,proto3" json:"src_port,omitempty"`                                                                                               // Source port.
-	TcpFlags           *wrappers.UInt32Value `protobuf:"bytes,31,opt,name=tcp_flags,json=tcpFlags,proto3" json:"tcp_flags,omitempty"`                                                                                            // TCP Flags.
-	Tos                *wrappers.UInt32Value `protobuf:"bytes,32,opt,name=tos,proto3" json:"tos,omitempty"`                                                                                                                      // TOS
-	NetflowVersion     NetflowVersion        `protobuf:"varint,33,opt,name=netflow_version,json=netflowVersion,proto3,enum=org.opennms.apicontracts.flows.document.NetflowVersion" json:"netflow_version,omitempty"`             // Netflow version
-	Vlan               *wrappers.UInt32Value `protobuf:"bytes,34,opt,name=vlan,proto3" json:"vlan,omitempty"`                                                                                                                    // VLAN ID.
-	SrcNode            *NodeInfo             `protobuf:"bytes,35,opt,name=src_node,json=srcNode,proto3" json:"src_node,omitempty"`
-	ExporterNode       *NodeInfo             `protobuf:"bytes,36,opt,name=exporter_node,json=exporterNode,proto3" json:"exporter_node,omitempty"`
-	DestNode           *NodeInfo             `protobuf:"bytes,37,opt,name=dest_node,json=destNode,proto3" json:"dest_node,omitempty"`
-	Application        string                `protobuf:"bytes,38,opt,name=application,proto3" json:"application,omitempty"`
-	Host               string                `protobuf:"bytes,39,opt,name=host,proto3" json:"host,omitempty"`
-	Location           string                `protobuf:"bytes,40,opt,name=location,proto3" json:"location,omitempty"`
-	SrcLocality        Locality              `protobuf:"varint,41,opt,name=src_locality,json=srcLocality,proto3,enum=org.opennms.apicontracts.flows.document.Locality" json:"src_locality,omitempty"`
-	DstLocality        Locality              `protobuf:"varint,42,opt,name=dst_locality,json=dstLocality,proto3,enum=org.opennms.apicontracts.flows.document.Locality" json:"dst_locality,omitempty"`
-	FlowLocality       Locality              `protobuf:"varint,43,opt,name=flow_locality,json=flowLocality,proto3,enum=org.opennms.apicontracts.flows.document.Locality" json:"flow_locality,omitempty"`
+	// Last switched Value minus detected skew
+	LastSwitched      *wrappers.UInt64Value `protobuf:"bytes,13,opt,name=last_switched,json=lastSwitched,proto3" json:"last_switched,omitempty"`
+	NumFlowRecords    *wrappers.UInt32Value `protobuf:"bytes,14,opt,name=num_flow_records,json=numFlowRecords,proto3" json:"num_flow_records,omitempty"`                                                                        // Number of flow records in the associated packet.
+	NumPackets        *wrappers.UInt64Value `protobuf:"bytes,15,opt,name=num_packets,json=numPackets,proto3" json:"num_packets,omitempty"`                                                                                      // Number of packets in the flow.
+	FlowSeqNum        *wrappers.UInt64Value `protobuf:"bytes,16,opt,name=flow_seq_num,json=flowSeqNum,proto3" json:"flow_seq_num,omitempty"`                                                                                    // Flow packet sequence number.
+	InputSnmpIfindex  *wrappers.UInt32Value `protobuf:"bytes,17,opt,name=input_snmp_ifindex,json=inputSnmpIfindex,proto3" json:"input_snmp_ifindex,omitempty"`                                                                  // Input SNMP ifIndex.
+	OutputSnmpIfindex *wrappers.UInt32Value `protobuf:"bytes,18,opt,name=output_snmp_ifindex,json=outputSnmpIfindex,proto3" json:"output_snmp_ifindex,omitempty"`                                                               // Output SNMP ifIndex.
+	IpProtocolVersion *wrappers.UInt32Value `protobuf:"bytes,19,opt,name=ip_protocol_version,json=ipProtocolVersion,proto3" json:"ip_protocol_version,omitempty"`                                                               // IPv4 vs IPv6.
+	NextHopAddress    string                `protobuf:"bytes,20,opt,name=next_hop_address,json=nextHopAddress,proto3" json:"next_hop_address,omitempty"`                                                                        // Next hop IpAddress.
+	NextHopHostname   string                `protobuf:"bytes,21,opt,name=next_hop_hostname,json=nextHopHostname,proto3" json:"next_hop_hostname,omitempty"`                                                                     // Next hop hostname.
+	Protocol          *wrappers.UInt32Value `protobuf:"bytes,22,opt,name=protocol,proto3" json:"protocol,omitempty"`                                                                                                            // IP protocol number i.e 6 for TCP, 17 for UDP
+	SamplingAlgorithm SamplingAlgorithm     `protobuf:"varint,23,opt,name=sampling_algorithm,json=samplingAlgorithm,proto3,enum=org.opennms.apicontracts.flows.document.SamplingAlgorithm" json:"sampling_algorithm,omitempty"` // Sampling algorithm ID.
+	SamplingInterval  *wrappers.DoubleValue `protobuf:"bytes,24,opt,name=sampling_interval,json=samplingInterval,proto3" json:"sampling_interval,omitempty"`                                                                    // Sampling interval.
+	// Source address. Used in enrichment phase to calculate NodeInfo
+	SrcAddress string `protobuf:"bytes,26,opt,name=src_address,json=srcAddress,proto3" json:"src_address,omitempty"`
+	// Source hostname. Calculated during enrichment phase
+	SrcHostname    string                `protobuf:"bytes,27,opt,name=src_hostname,json=srcHostname,proto3" json:"src_hostname,omitempty"`
+	SrcAs          *wrappers.UInt64Value `protobuf:"bytes,28,opt,name=src_as,json=srcAs,proto3" json:"src_as,omitempty"`                                                                                         // Source AS number.
+	SrcMaskLen     *wrappers.UInt32Value `protobuf:"bytes,29,opt,name=src_mask_len,json=srcMaskLen,proto3" json:"src_mask_len,omitempty"`                                                                        // The number of contiguous bits in the destination address subnet mask.
+	SrcPort        *wrappers.UInt32Value `protobuf:"bytes,30,opt,name=src_port,json=srcPort,proto3" json:"src_port,omitempty"`                                                                                   // Source port.
+	TcpFlags       *wrappers.UInt32Value `protobuf:"bytes,31,opt,name=tcp_flags,json=tcpFlags,proto3" json:"tcp_flags,omitempty"`                                                                                // TCP Flags.
+	Tos            *wrappers.UInt32Value `protobuf:"bytes,32,opt,name=tos,proto3" json:"tos,omitempty"`                                                                                                          // TOS
+	NetflowVersion NetflowVersion        `protobuf:"varint,33,opt,name=netflow_version,json=netflowVersion,proto3,enum=org.opennms.apicontracts.flows.document.NetflowVersion" json:"netflow_version,omitempty"` // Netflow version
+	Vlan           *wrappers.UInt32Value `protobuf:"bytes,34,opt,name=vlan,proto3" json:"vlan,omitempty"`                                                                                                        // VLAN ID.
+	// Calculated during enrichment phase from 'location', 'dstAddress', 'tenantId' fields
+	SrcNode *NodeInfo `protobuf:"bytes,35,opt,name=src_node,json=srcNode,proto3" json:"src_node,omitempty"`
+	// Calculated during enrichment phase from 'location', 'exporterAddress', 'tenantId' fields
+	ExporterNode *NodeInfo `protobuf:"bytes,36,opt,name=exporter_node,json=exporterNode,proto3" json:"exporter_node,omitempty"`
+	// Calculated during enrichment phase from 'location', 'srcAddress', 'tenantId' fields
+	DestNode *NodeInfo `protobuf:"bytes,37,opt,name=dest_node,json=destNode,proto3" json:"dest_node,omitempty"`
+	// Calculated during enrichment phase
+	Application string `protobuf:"bytes,38,opt,name=application,proto3" json:"application,omitempty"`
+	Host        string `protobuf:"bytes,39,opt,name=host,proto3" json:"host,omitempty"`
+	// The user can specify where the node / minion is
+	Location string `protobuf:"bytes,40,opt,name=location,proto3" json:"location,omitempty"`
+	// Determined during enrichment phase from SrcAddress field
+	SrcLocality Locality `protobuf:"varint,41,opt,name=src_locality,json=srcLocality,proto3,enum=org.opennms.apicontracts.flows.document.Locality" json:"src_locality,omitempty"`
+	// Determined during enrichment phase from DstAddress field
+	DstLocality Locality `protobuf:"varint,42,opt,name=dst_locality,json=dstLocality,proto3,enum=org.opennms.apicontracts.flows.document.Locality" json:"dst_locality,omitempty"`
+	// Determined during enrichment phase from DstLocality and SrcLocality field
+	FlowLocality Locality `protobuf:"varint,43,opt,name=flow_locality,json=flowLocality,proto3,enum=org.opennms.apicontracts.flows.document.Locality" json:"flow_locality,omitempty"`
+	// This field stores the detected skew, that is the difference between timestamp and received_at field
+	// If received time and export time differ too much, correct all timestamps by the difference
+	// Not needed to be persisted
 	ClockCorrection    uint64                `protobuf:"varint,45,opt,name=clock_correction,json=clockCorrection,proto3" json:"clock_correction,omitempty"`         // Applied clock correction im milliseconds.
 	Dscp               *wrappers.UInt32Value `protobuf:"bytes,46,opt,name=dscp,proto3" json:"dscp,omitempty"`                                                       // DSCP; upper 6 bits of TOS
 	Ecn                *wrappers.UInt32Value `protobuf:"bytes,47,opt,name=ecn,proto3" json:"ecn,omitempty"`                                                         // ECN; lower 2 bits of TOS
-	TenantId           string                `protobuf:"bytes,48,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`                               //tenant id for multi-tenancy life
+	TenantId           string                `protobuf:"bytes,48,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`                               // tenant id for multi-tenancy life
 	ExporterAddress    string                `protobuf:"bytes,49,opt,name=exporter_address,json=exporterAddress,proto3" json:"exporter_address,omitempty"`          // Raw sending IP of the exporter
 	ExporterPort       *wrappers.UInt32Value `protobuf:"bytes,50,opt,name=exporter_port,json=exporterPort,proto3" json:"exporter_port,omitempty"`                   // Raw sending port of the exporter
 	ExporterIdentifier string                `protobuf:"bytes,52,opt,name=exporter_identifier,json=exporterIdentifier,proto3" json:"exporter_identifier,omitempty"` // Protocol specific exporter identifier
-	ReceivedAt         uint64                `protobuf:"varint,53,opt,name=received_at,json=receivedAt,proto3" json:"received_at,omitempty"`                        // Flow received at in milliseconds. for clock skew detection
+	// Flow received at in milliseconds. for clock skew detection
+	// Not needed to be persisted
+	ReceivedAt uint64 `protobuf:"varint,53,opt,name=received_at,json=receivedAt,proto3" json:"received_at,omitempty"`
 }
 
 func (x *FlowDocument) Reset() {
@@ -420,7 +458,7 @@ func (x *FlowDocument) GetDirection() Direction {
 	if x != nil {
 		return x.Direction
 	}
-	return Direction_INGRESS
+	return Direction_UNDEFINED_DIRECTION
 }
 
 func (x *FlowDocument) GetDstAddress() string {
@@ -560,7 +598,7 @@ func (x *FlowDocument) GetSamplingAlgorithm() SamplingAlgorithm {
 	if x != nil {
 		return x.SamplingAlgorithm
 	}
-	return SamplingAlgorithm_UNASSIGNED
+	return SamplingAlgorithm_UNDEFINED_SAMPLING_ALGORITHM
 }
 
 func (x *FlowDocument) GetSamplingInterval() *wrappers.DoubleValue {
@@ -623,7 +661,7 @@ func (x *FlowDocument) GetNetflowVersion() NetflowVersion {
 	if x != nil {
 		return x.NetflowVersion
 	}
-	return NetflowVersion_V5
+	return NetflowVersion_UNDEFINED_NETFLOW_VERSION
 }
 
 func (x *FlowDocument) GetVlan() *wrappers.UInt32Value {
@@ -679,21 +717,21 @@ func (x *FlowDocument) GetSrcLocality() Locality {
 	if x != nil {
 		return x.SrcLocality
 	}
-	return Locality_PUBLIC
+	return Locality_UNDEFINED_LOCALITY
 }
 
 func (x *FlowDocument) GetDstLocality() Locality {
 	if x != nil {
 		return x.DstLocality
 	}
-	return Locality_PUBLIC
+	return Locality_UNDEFINED_LOCALITY
 }
 
 func (x *FlowDocument) GetFlowLocality() Locality {
 	if x != nil {
 		return x.FlowLocality
 	}
-	return Locality_PUBLIC
+	return Locality_UNDEFINED_LOCALITY
 }
 
 func (x *FlowDocument) GetClockCorrection() uint64 {
@@ -830,11 +868,11 @@ var file_document_flow_document_proto_rawDesc = []byte{
 	0x72, 0x65, 0x69, 0x67, 0x6e, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x66,
 	0x6f, 0x72, 0x65, 0x69, 0x67, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
 	0x09, 0x66, 0x6f, 0x72, 0x65, 0x69, 0x67, 0x6e, 0x49, 0x64, 0x12, 0x17, 0x0a, 0x07, 0x6e, 0x6f,
-	0x64, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x06, 0x6e, 0x6f, 0x64,
+	0x64, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x6e, 0x6f, 0x64,
 	0x65, 0x49, 0x64, 0x12, 0x1e, 0x0a, 0x0a, 0x63, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x69, 0x65,
 	0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0a, 0x63, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72,
 	0x69, 0x65, 0x73, 0x12, 0x21, 0x0a, 0x0c, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x66, 0x61, 0x63, 0x65,
-	0x5f, 0x69, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0b, 0x69, 0x6e, 0x74, 0x65, 0x72,
+	0x5f, 0x69, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0b, 0x69, 0x6e, 0x74, 0x65, 0x72,
 	0x66, 0x61, 0x63, 0x65, 0x49, 0x64, 0x22, 0x94, 0x17, 0x0a, 0x0c, 0x46, 0x6c, 0x6f, 0x77, 0x44,
 	0x6f, 0x63, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x1c, 0x0a, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73,
 	0x74, 0x61, 0x6d, 0x70, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x74, 0x69, 0x6d, 0x65,
@@ -1030,40 +1068,46 @@ var file_document_flow_document_proto_rawDesc = []byte{
 	0x67, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x6e, 0x6d, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x63, 0x6f, 0x6e,
 	0x74, 0x72, 0x61, 0x63, 0x74, 0x73, 0x2e, 0x66, 0x6c, 0x6f, 0x77, 0x73, 0x2e, 0x64, 0x6f, 0x63,
 	0x75, 0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x46, 0x6c, 0x6f, 0x77, 0x44, 0x6f, 0x63, 0x75, 0x6d, 0x65,
-	0x6e, 0x74, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2a, 0x32, 0x0a, 0x09, 0x44,
-	0x69, 0x72, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x0b, 0x0a, 0x07, 0x49, 0x4e, 0x47, 0x52,
-	0x45, 0x53, 0x53, 0x10, 0x00, 0x12, 0x0a, 0x0a, 0x06, 0x45, 0x47, 0x52, 0x45, 0x53, 0x53, 0x10,
-	0x01, 0x12, 0x0c, 0x0a, 0x07, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0xff, 0x01, 0x2a,
-	0xa6, 0x02, 0x0a, 0x11, 0x53, 0x61, 0x6d, 0x70, 0x6c, 0x69, 0x6e, 0x67, 0x41, 0x6c, 0x67, 0x6f,
-	0x72, 0x69, 0x74, 0x68, 0x6d, 0x12, 0x0e, 0x0a, 0x0a, 0x55, 0x4e, 0x41, 0x53, 0x53, 0x49, 0x47,
-	0x4e, 0x45, 0x44, 0x10, 0x00, 0x12, 0x23, 0x0a, 0x1f, 0x53, 0x59, 0x53, 0x54, 0x45, 0x4d, 0x41,
-	0x54, 0x49, 0x43, 0x5f, 0x43, 0x4f, 0x55, 0x4e, 0x54, 0x5f, 0x42, 0x41, 0x53, 0x45, 0x44, 0x5f,
-	0x53, 0x41, 0x4d, 0x50, 0x4c, 0x49, 0x4e, 0x47, 0x10, 0x01, 0x12, 0x22, 0x0a, 0x1e, 0x53, 0x59,
-	0x53, 0x54, 0x45, 0x4d, 0x41, 0x54, 0x49, 0x43, 0x5f, 0x54, 0x49, 0x4d, 0x45, 0x5f, 0x42, 0x41,
-	0x53, 0x45, 0x44, 0x5f, 0x53, 0x41, 0x4d, 0x50, 0x4c, 0x49, 0x4e, 0x47, 0x10, 0x02, 0x12, 0x1e,
-	0x0a, 0x1a, 0x52, 0x41, 0x4e, 0x44, 0x4f, 0x4d, 0x5f, 0x4e, 0x5f, 0x4f, 0x55, 0x54, 0x5f, 0x4f,
-	0x46, 0x5f, 0x4e, 0x5f, 0x53, 0x41, 0x4d, 0x50, 0x4c, 0x49, 0x4e, 0x47, 0x10, 0x03, 0x12, 0x22,
-	0x0a, 0x1e, 0x55, 0x4e, 0x49, 0x46, 0x4f, 0x52, 0x4d, 0x5f, 0x50, 0x52, 0x4f, 0x42, 0x41, 0x42,
-	0x49, 0x4c, 0x49, 0x53, 0x54, 0x49, 0x43, 0x5f, 0x53, 0x41, 0x4d, 0x50, 0x4c, 0x49, 0x4e, 0x47,
-	0x10, 0x04, 0x12, 0x1c, 0x0a, 0x18, 0x50, 0x52, 0x4f, 0x50, 0x45, 0x52, 0x54, 0x59, 0x5f, 0x4d,
-	0x41, 0x54, 0x43, 0x48, 0x5f, 0x46, 0x49, 0x4c, 0x54, 0x45, 0x52, 0x49, 0x4e, 0x47, 0x10, 0x05,
-	0x12, 0x18, 0x0a, 0x14, 0x48, 0x41, 0x53, 0x48, 0x5f, 0x42, 0x41, 0x53, 0x45, 0x44, 0x5f, 0x46,
-	0x49, 0x4c, 0x54, 0x45, 0x52, 0x49, 0x4e, 0x47, 0x10, 0x06, 0x12, 0x3c, 0x0a, 0x38, 0x46, 0x4c,
-	0x4f, 0x57, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f, 0x44, 0x45, 0x50, 0x45, 0x4e, 0x44, 0x45,
-	0x4e, 0x54, 0x5f, 0x49, 0x4e, 0x54, 0x45, 0x52, 0x4d, 0x45, 0x44, 0x49, 0x41, 0x54, 0x45, 0x5f,
-	0x46, 0x4c, 0x4f, 0x57, 0x5f, 0x53, 0x45, 0x4c, 0x45, 0x43, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x50,
-	0x52, 0x4f, 0x43, 0x45, 0x53, 0x53, 0x10, 0x07, 0x2a, 0x36, 0x0a, 0x0e, 0x4e, 0x65, 0x74, 0x66,
-	0x6c, 0x6f, 0x77, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x06, 0x0a, 0x02, 0x56, 0x35,
-	0x10, 0x00, 0x12, 0x06, 0x0a, 0x02, 0x56, 0x39, 0x10, 0x01, 0x12, 0x09, 0x0a, 0x05, 0x49, 0x50,
-	0x46, 0x49, 0x58, 0x10, 0x02, 0x12, 0x09, 0x0a, 0x05, 0x53, 0x46, 0x4c, 0x4f, 0x57, 0x10, 0x03,
-	0x2a, 0x23, 0x0a, 0x08, 0x4c, 0x6f, 0x63, 0x61, 0x6c, 0x69, 0x74, 0x79, 0x12, 0x0a, 0x0a, 0x06,
-	0x50, 0x55, 0x42, 0x4c, 0x49, 0x43, 0x10, 0x00, 0x12, 0x0b, 0x0a, 0x07, 0x50, 0x52, 0x49, 0x56,
-	0x41, 0x54, 0x45, 0x10, 0x01, 0x42, 0x49, 0x50, 0x01, 0x5a, 0x45, 0x67, 0x69, 0x74, 0x68, 0x75,
-	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x4f, 0x70, 0x65, 0x6e, 0x4e, 0x4d, 0x53, 0x2d, 0x43, 0x6c,
-	0x6f, 0x75, 0x64, 0x2f, 0x66, 0x6c, 0x6f, 0x77, 0x73, 0x2d, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61,
-	0x63, 0x74, 0x73, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x6c, 0x6f, 0x77, 0x73, 0x2d, 0x63, 0x6f,
-	0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x73, 0x2f, 0x64, 0x6f, 0x63, 0x75, 0x6d, 0x65, 0x6e, 0x74,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6e, 0x74, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2a, 0x4b, 0x0a, 0x09, 0x44,
+	0x69, 0x72, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x17, 0x0a, 0x13, 0x55, 0x4e, 0x44, 0x45,
+	0x46, 0x49, 0x4e, 0x45, 0x44, 0x5f, 0x44, 0x49, 0x52, 0x45, 0x43, 0x54, 0x49, 0x4f, 0x4e, 0x10,
+	0x00, 0x12, 0x0b, 0x0a, 0x07, 0x49, 0x4e, 0x47, 0x52, 0x45, 0x53, 0x53, 0x10, 0x01, 0x12, 0x0a,
+	0x0a, 0x06, 0x45, 0x47, 0x52, 0x45, 0x53, 0x53, 0x10, 0x02, 0x12, 0x0c, 0x0a, 0x07, 0x55, 0x4e,
+	0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0xff, 0x01, 0x2a, 0xb8, 0x02, 0x0a, 0x11, 0x53, 0x61, 0x6d,
+	0x70, 0x6c, 0x69, 0x6e, 0x67, 0x41, 0x6c, 0x67, 0x6f, 0x72, 0x69, 0x74, 0x68, 0x6d, 0x12, 0x20,
+	0x0a, 0x1c, 0x55, 0x4e, 0x44, 0x45, 0x46, 0x49, 0x4e, 0x45, 0x44, 0x5f, 0x53, 0x41, 0x4d, 0x50,
+	0x4c, 0x49, 0x4e, 0x47, 0x5f, 0x41, 0x4c, 0x47, 0x4f, 0x52, 0x49, 0x54, 0x48, 0x4d, 0x10, 0x00,
+	0x12, 0x23, 0x0a, 0x1f, 0x53, 0x59, 0x53, 0x54, 0x45, 0x4d, 0x41, 0x54, 0x49, 0x43, 0x5f, 0x43,
+	0x4f, 0x55, 0x4e, 0x54, 0x5f, 0x42, 0x41, 0x53, 0x45, 0x44, 0x5f, 0x53, 0x41, 0x4d, 0x50, 0x4c,
+	0x49, 0x4e, 0x47, 0x10, 0x01, 0x12, 0x22, 0x0a, 0x1e, 0x53, 0x59, 0x53, 0x54, 0x45, 0x4d, 0x41,
+	0x54, 0x49, 0x43, 0x5f, 0x54, 0x49, 0x4d, 0x45, 0x5f, 0x42, 0x41, 0x53, 0x45, 0x44, 0x5f, 0x53,
+	0x41, 0x4d, 0x50, 0x4c, 0x49, 0x4e, 0x47, 0x10, 0x02, 0x12, 0x1e, 0x0a, 0x1a, 0x52, 0x41, 0x4e,
+	0x44, 0x4f, 0x4d, 0x5f, 0x4e, 0x5f, 0x4f, 0x55, 0x54, 0x5f, 0x4f, 0x46, 0x5f, 0x4e, 0x5f, 0x53,
+	0x41, 0x4d, 0x50, 0x4c, 0x49, 0x4e, 0x47, 0x10, 0x03, 0x12, 0x22, 0x0a, 0x1e, 0x55, 0x4e, 0x49,
+	0x46, 0x4f, 0x52, 0x4d, 0x5f, 0x50, 0x52, 0x4f, 0x42, 0x41, 0x42, 0x49, 0x4c, 0x49, 0x53, 0x54,
+	0x49, 0x43, 0x5f, 0x53, 0x41, 0x4d, 0x50, 0x4c, 0x49, 0x4e, 0x47, 0x10, 0x04, 0x12, 0x1c, 0x0a,
+	0x18, 0x50, 0x52, 0x4f, 0x50, 0x45, 0x52, 0x54, 0x59, 0x5f, 0x4d, 0x41, 0x54, 0x43, 0x48, 0x5f,
+	0x46, 0x49, 0x4c, 0x54, 0x45, 0x52, 0x49, 0x4e, 0x47, 0x10, 0x05, 0x12, 0x18, 0x0a, 0x14, 0x48,
+	0x41, 0x53, 0x48, 0x5f, 0x42, 0x41, 0x53, 0x45, 0x44, 0x5f, 0x46, 0x49, 0x4c, 0x54, 0x45, 0x52,
+	0x49, 0x4e, 0x47, 0x10, 0x06, 0x12, 0x3c, 0x0a, 0x38, 0x46, 0x4c, 0x4f, 0x57, 0x5f, 0x53, 0x54,
+	0x41, 0x54, 0x45, 0x5f, 0x44, 0x45, 0x50, 0x45, 0x4e, 0x44, 0x45, 0x4e, 0x54, 0x5f, 0x49, 0x4e,
+	0x54, 0x45, 0x52, 0x4d, 0x45, 0x44, 0x49, 0x41, 0x54, 0x45, 0x5f, 0x46, 0x4c, 0x4f, 0x57, 0x5f,
+	0x53, 0x45, 0x4c, 0x45, 0x43, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x50, 0x52, 0x4f, 0x43, 0x45, 0x53,
+	0x53, 0x10, 0x07, 0x2a, 0x55, 0x0a, 0x0e, 0x4e, 0x65, 0x74, 0x66, 0x6c, 0x6f, 0x77, 0x56, 0x65,
+	0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x1d, 0x0a, 0x19, 0x55, 0x4e, 0x44, 0x45, 0x46, 0x49, 0x4e,
+	0x45, 0x44, 0x5f, 0x4e, 0x45, 0x54, 0x46, 0x4c, 0x4f, 0x57, 0x5f, 0x56, 0x45, 0x52, 0x53, 0x49,
+	0x4f, 0x4e, 0x10, 0x00, 0x12, 0x06, 0x0a, 0x02, 0x56, 0x35, 0x10, 0x01, 0x12, 0x06, 0x0a, 0x02,
+	0x56, 0x39, 0x10, 0x02, 0x12, 0x09, 0x0a, 0x05, 0x49, 0x50, 0x46, 0x49, 0x58, 0x10, 0x03, 0x12,
+	0x09, 0x0a, 0x05, 0x53, 0x46, 0x4c, 0x4f, 0x57, 0x10, 0x04, 0x2a, 0x3b, 0x0a, 0x08, 0x4c, 0x6f,
+	0x63, 0x61, 0x6c, 0x69, 0x74, 0x79, 0x12, 0x16, 0x0a, 0x12, 0x55, 0x4e, 0x44, 0x45, 0x46, 0x49,
+	0x4e, 0x45, 0x44, 0x5f, 0x4c, 0x4f, 0x43, 0x41, 0x4c, 0x49, 0x54, 0x59, 0x10, 0x00, 0x12, 0x0a,
+	0x0a, 0x06, 0x50, 0x55, 0x42, 0x4c, 0x49, 0x43, 0x10, 0x01, 0x12, 0x0b, 0x0a, 0x07, 0x50, 0x52,
+	0x49, 0x56, 0x41, 0x54, 0x45, 0x10, 0x02, 0x42, 0x49, 0x50, 0x01, 0x5a, 0x45, 0x67, 0x69, 0x74,
+	0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x4f, 0x70, 0x65, 0x6e, 0x4e, 0x4d, 0x53, 0x2d,
+	0x43, 0x6c, 0x6f, 0x75, 0x64, 0x2f, 0x66, 0x6c, 0x6f, 0x77, 0x73, 0x2d, 0x63, 0x6f, 0x6e, 0x74,
+	0x72, 0x61, 0x63, 0x74, 0x73, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x6c, 0x6f, 0x77, 0x73, 0x2d,
+	0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x73, 0x2f, 0x64, 0x6f, 0x63, 0x75, 0x6d, 0x65,
+	0x6e, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (

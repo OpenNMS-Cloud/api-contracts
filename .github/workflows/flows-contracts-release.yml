@@ -1,0 +1,20 @@
+name: Flows Contracts
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'flows-contracts/**'
+
+jobs:
+  java:
+    name: Java library
+    uses: ./.github/workflows/maven-library-release.yml
+    with:
+      working-directory: 'flows-contracts'
+  go:
+    name: Go module
+    uses: ./.github/workflows/go-module-release.yml
+    with:
+      working-directory: 'flows-contracts'

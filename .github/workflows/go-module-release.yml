@@ -7,10 +7,6 @@ on:
         description: 'This workflow is a stub'
         required: true
         type: string
-      publish:
-        description: 'This workflow is a stub'
-        required: true
-        type: boolean
 
 jobs:
   build-and-publish:

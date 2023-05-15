@@ -15,11 +15,7 @@
     </description>
 
     <artifactId>minion-certificate-contracts</artifactId>
-    <version>${revision}</version>
-
-    <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
-    </properties>
+    <version>0.0.1-SNAPSHOT</version>
 
     <build>
         <finalName>${project.artifactId}</finalName>

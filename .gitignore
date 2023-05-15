@@ -11,8 +11,11 @@
 *.iml
 target/
 
-# maven-release-plugin dry run artifacts
+# maven-release-plugin artifacts
 pom.xml.next
 pom.xml.releaseBackup
 pom.xml.tag
 release.properties
+
+# maven-flatten-plugin artifacts
+.flattened-pom.xml

@@ -1,4 +1,4 @@
-name: Maven Library
+name: Maven Library Release
 
 on:
   workflow_call:

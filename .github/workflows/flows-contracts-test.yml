@@ -1,4 +1,4 @@
-name: Flows Contracts
+name: Flows Contracts Test
 
 on:
   pull_request:

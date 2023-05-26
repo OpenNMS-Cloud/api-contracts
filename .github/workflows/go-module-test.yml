@@ -1,4 +1,4 @@
-name: TODO - Go Module
+name: TODO - Go Module Test
 
 on:
   workflow_call:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-publish:
-    name: TODO - Build and publish
+    name: TODO - Build and test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

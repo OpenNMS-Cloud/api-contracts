@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.opennms.horizon</groupId>
+        <groupId>org.opennms</groupId>
         <artifactId>api-contracts</artifactId>
         <version>0.0.1</version>
     </parent>

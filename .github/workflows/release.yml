@@ -53,36 +53,25 @@ jobs:
 
       - name: Commit & tag release
         run: |
-          git commit -am "[ci skip] Release ${{ inputs.working-directory }} v${{ steps.release-version.outputs.version }}"
+          cp pom.xml.tag pom.xml
+          git commit -am "[ci skip] ${{ inputs.working-directory }}: Release ${{ steps.release-version.outputs.version_tag }}"
           git tag ${{ steps.release-version.outputs.version_tag }}
-        shell: bash
-        working-directory: ${{ inputs.working-directory }}
 
-      - name: (Java) Perform release
-        run: |
-          mvn -B release:perform -DdryRun=true -DlocalCheckout=true
-        shell: bash
-        working-directory: ${{ inputs.working-directory }}
+          cp pom.xml.next pom.xml
+          git commit -am "[ci skip] ${{ inputs.working-directory }}: prepare for next development iteration"
 
-      - name: show git log
-        run: |
-          git status
-          git tag --list
-          git log
-          git checkout -b workflow-run-${{ github.run_id }}-${{ github.run_attempt }}
-          git push -f origin workflow-run-${{ github.run_id }}-${{ github.run_attempt }}
-        shell: bash
-        working-directory: ${{ inputs.working-directory }}
-
-      - name: Push tags and commits
-        if: false
-        run: |
           git push
           git push origin ${{ steps.release-version.outputs.version_tag }}
         shell: bash
         working-directory: ${{ inputs.working-directory }}
 
-      - name: Upload library artifacts
+      - name: (Java) Perform release
+        run: |
+          mvn -B release:perform
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
+
+      - name: Upload Java artifacts
         uses: actions/upload-artifact@v3
         with:
           name: 'jar-files'

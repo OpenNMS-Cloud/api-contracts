@@ -1,24 +1,32 @@
-name: TODO - Go Module Test
+name: Go Module Test
 
 on:
   workflow_call:
     inputs:
       working-directory:
-        description: 'This workflow is a stub'
+        description: 'Root directory of the Go module'
         required: true
         type: string
 
 jobs:
-  build-and-publish:
-    name: TODO - Build and test
+  build-and-test:
+    name: Build and test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
       - name: Setup golang
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4.0.1
+
+      - name: Setup protoc
+        uses: arduino/setup-protoc@v1.3.0
+
+      - name: Setup protoc-gen-go
+        run: |
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 
       - name: Build library
-        run: echo "This workflow is a stub"
+        run: ./build.sh
         shell: bash
         working-directory: ${{ inputs.working-directory }}

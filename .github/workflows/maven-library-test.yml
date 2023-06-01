@@ -9,7 +9,7 @@ on:
         type: string
 
 jobs:
-  build-and-release:
+  build-and-test:
     name: Build and test
     runs-on: ubuntu-latest
     steps:

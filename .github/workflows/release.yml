@@ -13,7 +13,7 @@ on:
 
 jobs:
   release:
-    name: Release
+    name: Perform release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -65,7 +65,7 @@ jobs:
 
       - name: (Java) Perform release
         run: |
-          mvn -B release:perform -X
+          mvn -B release:perform
         shell: bash
         working-directory: ${{ inputs.working-directory }}
         env:

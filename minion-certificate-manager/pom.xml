@@ -9,20 +9,12 @@
         <version>0.0.1</version>
     </parent>
 
-    <name>OpenNMS :: API Contracts :: Minion Certificate gRPC Contracts</name>
+    <name>OpenNMS :: API Contracts :: Minion Certificate Manager gRPC Contracts</name>
     <description>
-        A library that provides gRPC contracts for minion certificate.
+        A library that provides gRPC contracts for minion certificate manager.
     </description>
 
     <artifactId>minion-certificate-contracts</artifactId>
-    <version>${revision}</version>
-
-    <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
-    </properties>
-
-    <build>
-        <finalName>${project.artifactId}</finalName>
-    </build>
+    <version>0.0.1-SNAPSHOT</version>
 
 </project>

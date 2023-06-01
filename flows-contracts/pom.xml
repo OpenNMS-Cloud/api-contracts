@@ -15,14 +15,6 @@
     </description>
 
     <artifactId>flows-contracts</artifactId>
-    <version>${revision}</version>
-
-    <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
-    </properties>
-
-    <build>
-        <finalName>${project.artifactId}</finalName>
-    </build>
+    <version>0.0.1-SNAPSHOT</version>
 
 </project>

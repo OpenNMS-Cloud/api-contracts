@@ -144,6 +144,7 @@
                 <version>3.0.0</version>
                 <configuration>
                     <scmCommentPrefix>[ci skip]</scmCommentPrefix>
+                    <tagNameFormat>${project.artifactId}/v@{project.version}</tagNameFormat>
                 </configuration>
             </plugin>
         </plugins>

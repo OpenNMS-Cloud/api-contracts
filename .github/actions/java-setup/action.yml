@@ -15,7 +15,7 @@ runs:
         distribution: temurin
         java-version: 17
         server-id: cloudsmith-api-contracts
-        server-username: github-actions
+        server-username: CLOUDSMITH_USERNAME
         server-password: CLOUDSMITH_API_KEY
 
     - name: Cache Maven dependencies

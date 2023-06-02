@@ -75,6 +75,7 @@ jobs:
         shell: bash
         working-directory: ${{ inputs.working-directory }}
         env:
+          # TODO: use secret for username
           CLOUDSMITH_USERNAME: ci-cd-devops
           CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}
 

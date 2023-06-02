@@ -1,0 +1,34 @@
+name: Maven Library Test
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        description: 'Directory that contains the library''s main POM file'
+        required: true
+        type: string
+
+jobs:
+  build-and-test:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: ./.github/actions/java-setup
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      - name: Build library
+        run: mvn -B verify
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
+
+      - name: Upload library artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: 'jar-files'
+          path: ${{ format('{0}/**/target/*.jar', inputs.working-directory) }}

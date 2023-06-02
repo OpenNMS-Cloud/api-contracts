@@ -1,0 +1,88 @@
+name: Release
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        description: 'Root directory of the library with proto and POM files.'
+        required: true
+        type: string
+    secrets:
+      CLOUDSMITH_API_KEY:
+        required: true
+
+jobs:
+  release:
+    name: Perform release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get release version
+        id: release-version
+        uses: paulhatch/semantic-version@v5.0.2
+        with:
+          tag_prefix: "${{ inputs.working-directory }}/v"
+          change_path: "${{ inputs.working-directory }}"
+
+      - name: Set up Java
+        uses: ./.github/actions/java-setup
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      - name: Set up Go
+        uses: ./.github/actions/go-setup
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: (Java) Prepare release
+        run: |
+          # Use dryRun, we don't want to commit yet
+          mvn -B release:prepare -DreleaseVersion=${{ steps.release-version.outputs.version }} -DdryRun=true
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
+
+      - name: (Go) Prepare release
+        run: ./build.sh
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
+
+      - name: Commit & tag release
+        run: |
+          # Configure runner for committing
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+          # Overwrite the original pom.xml with the release version
+          cp pom.xml.tag pom.xml
+
+          # Commit & tag everything at once
+          git commit -am "[ci skip] ${{ inputs.working-directory }}: Release ${{ steps.release-version.outputs.version_tag }}"
+          git tag ${{ steps.release-version.outputs.version_tag }}
+
+          # Commit the next SNAPSHOT pom
+          cp pom.xml.next pom.xml
+          git commit -am "[ci skip] ${{ inputs.working-directory }}: prepare for next development iteration"
+
+          git push
+          git push origin ${{ steps.release-version.outputs.version_tag }}
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
+
+      - name: (Java) Perform release
+        run: |
+          mvn -B release:perform
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
+        env:
+          # TODO: use secret for username
+          CLOUDSMITH_USERNAME: ci-cd-devops
+          CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}
+
+      - name: Upload Java artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: 'jar-files'
+          path: ${{ format('{0}/**/target/*.jar', inputs.working-directory) }}

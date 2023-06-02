@@ -1,0 +1,20 @@
+name: Minion Certificate Manager Test
+
+on:
+  pull_request:
+    branches:
+      - 'master'
+    paths:
+      - 'minion-certificate-manager/**'
+
+jobs:
+  java:
+    name: Java library
+    uses: ./.github/workflows/maven-library-test.yml
+    with:
+      working-directory: 'minion-certificate-manager'
+  go:
+    name: Go module
+    uses: ./.github/workflows/go-module-test.yml
+    with:
+      working-directory: 'minion-certificate-manager'

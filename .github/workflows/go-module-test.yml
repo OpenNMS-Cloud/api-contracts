@@ -1,0 +1,26 @@
+name: Go Module Test
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        description: 'Root directory of the Go module'
+        required: true
+        type: string
+
+jobs:
+  build-and-test:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: ./.github/actions/go-setup
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build library
+        run: ./build.sh
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}

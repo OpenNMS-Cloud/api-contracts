@@ -37,6 +37,7 @@ jobs:
 
       - name: (Java) Prepare release
         run: |
+          # Use dryRun, we don't want to commit yet
           mvn -B release:prepare -DreleaseVersion=${{ steps.release-version.outputs.version }} -DdryRun=true
         shell: bash
         working-directory: ${{ inputs.working-directory }}
@@ -48,13 +49,18 @@ jobs:
 
       - name: Commit & tag release
         run: |
+          # Configure runner for committing
           git config user.name github-actions
           git config user.email github-actions@github.com
 
+          # Overwrite the original pom.xml with the release version
           cp pom.xml.tag pom.xml
+
+          # Commit & tag everything at once
           git commit -am "[ci skip] ${{ inputs.working-directory }}: Release ${{ steps.release-version.outputs.version_tag }}"
           git tag ${{ steps.release-version.outputs.version_tag }}
 
+          # Commit the next SNAPSHOT pom
           cp pom.xml.next pom.xml
           git commit -am "[ci skip] ${{ inputs.working-directory }}: prepare for next development iteration"
 

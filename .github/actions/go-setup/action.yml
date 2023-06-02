@@ -1,5 +1,9 @@
 name: 'Set up Go'
 description: 'Sets up go and protoc for compilation.'
+inputs:
+  github-token:
+    description: 'GITHUB_TOKEN secret to avoid rate limiting'
+    required: true
 
 runs:
   using: "composite"
@@ -9,6 +13,8 @@ runs:
 
     - name: Setup protoc
       uses: arduino/setup-protoc@v1.3.0
+      with:
+        repo-token: ${{ inputs.github-token }}
 
     - name: Setup protoc-gen-go
       run: |

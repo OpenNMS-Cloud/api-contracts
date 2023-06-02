@@ -17,6 +17,8 @@ jobs:
 
       - name: Set up Go
         uses: ./.github/actions/go-setup
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build library
         run: ./build.sh
